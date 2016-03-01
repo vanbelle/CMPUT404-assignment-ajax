@@ -21,7 +21,6 @@
         limitations under the License.
     "/>
     <script src="json2.js"></script>
-    <link rel="stylesheet" type="text/css" href="fun.css">
   </head> 
   <body bgcolor="black" height="100%" width="100%"> 
     <canvas id="c" width="100%" height="100%" style="-webkit-tap-highlight-color: transparent;"></canvas> 
@@ -141,7 +140,7 @@ function addEntity(entity, data) {
     world[entity] = data;
     drawNextFrame(); // (but should we?)
     //XXX: Send a XHTML Request that updates the entity you just  modified!
-    sendJSONXMLHTTPRequest("http://localhost:5000/"+entity+"/"+encodeURIComponent(data),    data, function(JSONdata) {
+    sendJSONXMLHTTPRequest("http://localhost:5000/entity/"+entity,    data, function(JSONdata) {
         var nothing = 0;
     });
 
