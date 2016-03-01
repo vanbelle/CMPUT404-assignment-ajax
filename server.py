@@ -32,7 +32,8 @@ app.debug = True
 # {
 #    'a':{'x':1, 'y':2},
 #    'b':{'x':2, 'y':3}
-# }
+#}
+# {'a':{'x':1, 'y':2},'b':{'x':2, 'y':3}}
 
 class World:
     def __init__(self):
@@ -86,23 +87,25 @@ def update(entity):
     elif request.method == "PUT":
 	for key in obj:	
 	    myWorld.update(entity,key, obj[key])
-    else:
-	abort(405)
-    data = json.dumps(myWorld.get(entity))
-    resp = Response(data, status = 200, mimetype="application/json")
-    return resp
+    return get_entity(entity)
 
 @app.route("/world", methods=['POST','GET'])    
 def world():
     '''you should probably return the world here'''
     if request.method == "POST":
-	#TODO
+        myWorld.clear()
+        obj = json.loads(request.data)
+        ents = list(obj.keys())
+        for entity in ents:	
+            for key in obj[entity]: 
+	        myWorld.update(entity,key,obj[entity][key])
+        data = json.dumps(myWorld.world())
+        resp = Response(data, status = 200, mimetype="application/json")
+        return resp
     elif request.method == "GET":
         data = json.dumps(myWorld.world())
         resp = Response(data, status = 200, mimetype="application/json")
         return resp
-    else:
-	abort(405)
 
 @app.route("/entity/<entity>")    
 def get_entity(entity):
